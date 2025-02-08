@@ -8,133 +8,105 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import Gui.ThemeColor;
+import Gui.Display.Display;
 
 public class Keyboard extends JPanel {
 
-	public Keyboard() {
+	private GridBagConstraints gbc;
+	private NumberButton[] numberButtonsArray;
 
-		GridBagConstraints gbc = new GridBagConstraints();
+	public Keyboard(Display display) {
+
+		this.gbc = new GridBagConstraints();
 
 		this.setLayout(new GridBagLayout());
 		this.setOpaque(false);
 		this.setBounds(0, 170, 300, 300);
 		this.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
-		Button clearButton = new Button("C", ThemeColor.getBgColor().brighter().brighter().brighter().brighter(), ThemeColor.getFgColor());
-		Button backSpace = new Button("<", ThemeColor.getBgColor().brighter().brighter().brighter().brighter(), ThemeColor.getFgColor());
+		this.gbc.weightx = 1;
+		this.gbc.weighty = 1;
+		this.gbc.fill = GridBagConstraints.BOTH;
+		this.gbc.insets = new Insets(5, 5, 5, 5);
 
-		Button dividedBy = new Button("/",  ThemeColor.getMainColor(), ThemeColor.getFgColor());
-		Button times = new Button("x",  ThemeColor.getMainColor(), ThemeColor.getFgColor());
-		Button minus = new Button("-",  ThemeColor.getMainColor(), ThemeColor.getFgColor());
-		Button plus = new Button("+",  ThemeColor.getMainColor(), ThemeColor.getFgColor());
-		
-		Button equal = new Button("=",  ThemeColor.getMainColor().brighter(), ThemeColor.getFgColor());
-		
-		Button zero = new Button("0", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
-		Button one = new Button("1", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
-		Button two = new Button("2", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
-		Button three = new Button("3", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
-		Button four = new Button("4", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
-		Button five = new Button("5", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
-		Button six = new Button("6", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
-		Button seven = new Button("7", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
-		Button eight = new Button("8", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
-		Button nine = new Button("9", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
+		this.createNumberButtons(display);
+		this.gbc.gridwidth = 1;
+		this.gbc.gridheight = 1;
 
 		Button dot = new Button(".", ThemeColor.getBgColor().brighter().brighter(), ThemeColor.getMainColor());
-		
-		gbc.weightx = 1;
-		gbc.weighty = 1;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.insets = new Insets(5, 5, 5, 5);
+		this.gbc.gridx = 2;
+		this.gbc.gridy = 4;
+		this.add(dot, this.gbc);
 
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		add(clearButton, gbc);
+		ClearButton clearButton = new ClearButton(display);
+		this.gbc.gridx = 0;
+		this.gbc.gridy = 0;
+		this.add(clearButton, this.gbc);
 
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		add(backSpace, gbc);
+		BackspaceButton backSpace = new BackspaceButton(display);
+		this.gbc.gridx = 1;
+		this.gbc.gridy = 0;
+		this.add(backSpace, this.gbc);
 
-		gbc.gridx = 2;
-		gbc.gridy = 0;
-		add(dividedBy, gbc);
+		MathOperatorButton dividedBy = new MathOperatorButton("/", display);
+		this.gbc.gridx = 2;
+		this.gbc.gridy = 0;
+		this.add(dividedBy, this.gbc);
 
-		gbc.gridx = 3;
-		gbc.gridy = 0;
+		MathOperatorButton times = new MathOperatorButton("x", display);
+		this.gbc.gridx = 3;
+		this.gbc.gridy = 0;
+		this.add(times, this.gbc);
 
-		add(times, gbc);
+		MathOperatorButton minus = new MathOperatorButton("-", display);
+		this.gbc.gridx = 3;
+		this.gbc.gridy = 1;
+		this.add(minus, this.gbc);
 
-		gbc.gridx = 0;
-		gbc.gridy = 1;
+		MathOperatorButton plus = new MathOperatorButton("+", display);
+		this.gbc.gridx = 3;
+		this.gbc.gridy = 2;
+		this.add(plus, this.gbc);
 
-		add(nine, gbc);
+		EqualButton equal = new EqualButton(display);
+		this.gbc.gridx = 3;
+		this.gbc.gridy = 3;
+		this.gbc.gridheight = 2;
+		this.add(equal, this.gbc);
 
-		gbc.gridx = 1;
-		gbc.gridy = 1;
+	}
 
-		add(eight, gbc);
+	private void createNumberButtons(Display display) {
 
-		gbc.gridx = 2;
-		gbc.gridy = 1;
+		this.numberButtonsArray = new NumberButton[10];
+		for (short i = 0; i < 10; ++i) {
 
-		add(seven, gbc);
+			this.numberButtonsArray[i] = new NumberButton(Short.toString(i), display);
+		}
 
-		gbc.gridx = 3;
-		gbc.gridy = 1;
+		short k = 0;
+		short j = 3;
+		for (short i = 1; i < 10; i++) {
 
-		add(minus, gbc);
+			this.gbc.gridx = k;
+			this.gbc.gridy = j;
 
-		gbc.gridx = 0;
-		gbc.gridy = 2;
+			this.add(this.numberButtonsArray[i], this.gbc);
 
-		add(four, gbc);
+			if (k == 2) {
 
-		gbc.gridx = 1;
-		gbc.gridy = 2;
+				j--;
+				k = 0;
+			} else {
 
-		add(five, gbc);
+				k++;
+			}
+		}
+		this.gbc.gridx = 0;
+		this.gbc.gridy = 4;
+		this.gbc.gridwidth = 2;
+		this.gbc.gridheight = 1;
 
-		gbc.gridx = 2;
-		gbc.gridy = 2;
-
-		add(six, gbc);
-
-		gbc.gridx = 3;
-		gbc.gridy = 2;
-
-		add(plus, gbc);
-
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-
-		add(one, gbc);
-
-		gbc.gridx = 1;
-		gbc.gridy = 3;
-
-		add(two, gbc);
-
-		gbc.gridx = 2;
-		gbc.gridy = 3;
-
-		add(three, gbc);
-
-		gbc.gridx = 2;
-		gbc.gridy = 4;
-
-		add(dot, gbc);
-
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.gridwidth = 2;
-
-		add(zero, gbc);
-
-		gbc.gridx = 3;
-		gbc.gridy = 3;
-		gbc.gridheight = 2;
-
-		add(equal, gbc);
+		this.add(numberButtonsArray[0], this.gbc);
 	}
 }

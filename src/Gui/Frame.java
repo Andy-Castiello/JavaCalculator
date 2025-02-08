@@ -29,7 +29,7 @@ public class Frame extends JFrame {
 
 		this.displayPanel = new Display();
 
-		this.keyboardPanel = new Keyboard();
+		this.keyboardPanel = new Keyboard(this.displayPanel);
 
 		this.mainPanel.add(displayPanel);
 		this.mainPanel.add(keyboardPanel);

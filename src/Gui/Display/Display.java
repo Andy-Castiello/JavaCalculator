@@ -12,32 +12,86 @@ import Gui.ThemeColor;
 
 public class Display extends JPanel {
 
-	private JLabel count;
-	private JLabel result;
+	private JLabel secondaryDisplay;
+	private JLabel primaryDisplay;
 
 	public Display() {
 
-		this.count = new JLabel();
-		this.result = new JLabel();
+		this.secondaryDisplay = new JLabel();
+		this.primaryDisplay = new JLabel();
 
-		this.count.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
-		this.count.setText("4535 x 45");
-		this.count.setHorizontalAlignment(SwingConstants.RIGHT);
-		this.count.setFont(new Font("Arial", Font.BOLD, 20));
-		this.count.setForeground(ThemeColor.getFgColor());
+		this.secondaryDisplay.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+		this.secondaryDisplay.setText("");
+		this.secondaryDisplay.setHorizontalAlignment(SwingConstants.RIGHT);
+		this.secondaryDisplay.setFont(new Font("Arial", Font.BOLD, 20));
+		this.secondaryDisplay.setForeground(ThemeColor.getFgColor());
 
-		this.result.setText("204075");
-		this.result.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
-		this.result.setHorizontalAlignment(SwingConstants.RIGHT);
-		this.result.setFont(new Font("Arial", Font.BOLD, 40));
-		this.result.setForeground(ThemeColor.getFgColor());
+		this.primaryDisplay.setText("");
+		this.primaryDisplay.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+		this.primaryDisplay.setHorizontalAlignment(SwingConstants.RIGHT);
+		this.primaryDisplay.setFont(new Font("Arial", Font.BOLD, 40));
+		this.primaryDisplay.setForeground(ThemeColor.getFgColor());
 
 		this.setLayout(new GridLayout(2, 1, 0, 0));
 		this.setBounds(0, 0, 300, 170);
 		this.setOpaque(false);
 
-		this.add(this.count);
-		this.add(this.result);
+		this.add(this.secondaryDisplay);
+		this.add(this.primaryDisplay);
 	}
 
+	public void setPrimaryText(String text) {
+
+		this.primaryDisplay.setText(text);
+	}
+
+	public String getPrimaryText() {
+
+		return this.primaryDisplay.getText();
+	}
+
+	public void setSecondaryText(String text) {
+
+		this.secondaryDisplay.setText(text);
+	}
+
+	public String getSecondaryText() {
+
+		return this.secondaryDisplay.getText();
+	}
+
+	public String calculate() {
+
+		String[] text = this.secondaryDisplay.getText().split(" ");
+
+		double value1 = Double.parseDouble(text[0]);
+		double value2 = Double.parseDouble(this.getPrimaryText());
+
+		double result;
+
+		switch (text[1]) {
+		case "/": {
+
+			result = value1 / value2;
+			break;
+		}
+		case "x": {
+			result = value1 * value2;
+			break;
+		}
+		case "-": {
+			result = value1 - value2;
+			break;
+		}
+		case "+": {
+			result = value1 + value2;
+			break;
+		}
+		default:
+			System.out.print(getFocusTraversalKeysEnabled());
+			throw new IllegalArgumentException("Unexpected value: " + text[1]);
+		}
+		return String.valueOf(result);
+
+	}
 }
